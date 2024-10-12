@@ -9,7 +9,7 @@ An educational framework exploring ergonomic, lightweight multi-agent orchestrat
 ## Requirements
 
 - Ollama installed on your PC or access to any other service that provides LLM (Large Language Model) access.
-- You only need the URL for the LLM service (which you want to provide to the `ollamaCllient.py` file getOpenAICleint as base_url).
+- You only need the URL for the LLM service (which you want to provide to the function `getOpenAIClient` defined in the `ollamaClient.py` file as `base_url`).
 
 ## Setup Instructions
 
