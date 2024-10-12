@@ -4,6 +4,24 @@
 
 An educational framework exploring ergonomic, lightweight multi-agent orchestration.
 
+# Using This Project with Open Source Models
+
+## Requirements
+
+- Ollama installed on your PC or access to any other service that provides LLM (Large Language Model) access.
+- You only need the URL for the LLM service (which you want to provide to the `getOpenAIClient` function getOpenAICleint as base_url).
+
+## Setup Instructions
+
+1. Clone the project: https://github.com/MunirAbobaker/swarm.git
+
+2. Navigate to the project directory
+
+3. Open the `types.py` file and adjust the model name of the type agent (class Agent) to the one you want to use. For now, I added ollama3.1
+
+4. Install the required dependencies:
+   `pip install .`
+
 > [!WARNING]
 > Swarm is currently an experimental sample framework intended to explore ergonomic interfaces for multi-agent systems. It is not intended to be used in production, and therefore has no official support. (This also means we will not be reviewing PRs or issues!)
 >
