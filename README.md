@@ -11,16 +11,42 @@ An educational framework exploring ergonomic, lightweight multi-agent orchestrat
 - Ollama installed on your PC or access to any other service that provides LLM (Large Language Model) access.
 - You only need the URL for the LLM service (which you want to provide to the function `getOpenAIClient` defined in the `ollamaClient.py` file as `base_url`).
 
+## Supported Clients
+
+This project now supports multiple clients, including:
+
+- **OpenAI**: Access to OpenAI's models.
+- **Ollama**: Access to local models via Ollama.
+- **Hugging Face**: Access to Hugging Face models.
+
 ## Setup Instructions
 
-1. Clone the project: https://github.com/MunirAbobaker/swarm.git
+1. Clone the project:  `git clone https://github.com/MunirAbobaker/swarm.git`
 
 2. Navigate to the project directory
 
-3. Open the `types.py` file and adjust the model name of the type agent (class Agent) to the one you want to use. For now, I added ollama3.1
+4. Install the required dependencies: `pip install .`
 
-4. Install the required dependencies:
-   `pip install .`
+
+## Example Usage
+
+You can use the factory method to create different clients based on your needs. An example of usage can be found in `examples/basic/agent_handoff.py`.
+
+```python
+from swarm import Swarm, ClientFactory  
+
+# Create an OpenAI client
+openai_client = ClientFactory.create_client('openai')
+
+# Create a Hugging Face client
+huggingface_client = ClientFactory.create_client('huggingface')
+
+# Create an Ollama client
+ollama_client = ClientFactory.create_client('ollama')
+
+# you can pass key and url direclty to client 
+client = Swarm(ClientFactory.create_client('huggingface', base_url=os.getenv('ENDPOINT_URL'), api_key=os.getenv('HF_API_TOKEN')))
+```
 
 > [!WARNING]
 > Swarm is currently an experimental sample framework intended to explore ergonomic interfaces for multi-agent systems. It is not intended to be used in production, and therefore has no official support. (This also means we will not be reviewing PRs or issues!)
