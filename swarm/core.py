@@ -9,7 +9,7 @@ from openai import OpenAI
 
 
 # Local imports
-from .api_client import ClientFactory
+from .client_factory import ClientFactory
 from .util import function_to_json, debug_print, merge_chunk
 from .types import (
     Agent,
