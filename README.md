@@ -4,6 +4,25 @@
 
 An educational framework exploring ergonomic, lightweight multi-agent orchestration.
 
+> [!WARNING]
+> Swarm is currently an experimental sample framework intended to explore ergonomic interfaces for multi-agent systems. It is not intended to be used in production, and therefore has no official support. (This also means we will not be reviewing PRs or issues!)
+>
+> The primary goal of Swarm is to showcase the handoff & routines patterns explored in the [Orchestrating Agents: Handoffs & Routines](https://cookbook.openai.com/examples/orchestrating_agents) cookbook. It is not meant as a standalone library, and is primarily for educational purposes.
+
+## Install
+
+Requires Python 3.10+
+
+```shell
+pip install git+ssh://git@github.com/openai/swarm.git
+```
+
+or
+
+```shell
+pip install git+https://github.com/openai/swarm.git
+```
+
 # Using This Project with Open Source Models
 
 ## Requirements
@@ -27,65 +46,6 @@ This project now supports multiple clients, including:
 
 4. Install the required dependencies: `pip install .`
 
-
-## Example Usage
-
-You can use the factory method to create different clients based on your needs. An example of usage can be found in `examples/basic/agent_handoff.py`.
-
-```python
-from swarm import Swarm, ClientFactory  
-
-# Create an OpenAI client
-openai_client = ClientFactory.create_client('openai')
-
-# Create a Hugging Face client
-huggingface_client = ClientFactory.create_client('huggingface')
-
-# Create an Ollama client
-ollama_client = ClientFactory.create_client('ollama')
-
-# you can pass key and url direclty to client 
-client = Swarm(ClientFactory.create_client('huggingface', base_url=os.getenv('ENDPOINT_URL'), api_key=os.getenv('HF_API_TOKEN')))
-```
-## Extending with a New Client
-To add a new client, create a class that inherits from BaseClient, implement the required methods, and register it with the ClientFactory. Here’s an example:
-```python 
-
-from swarm import BaseClient, ClientFactory
-
-class CustomClient(BaseClient):
-    def __init__(self, api_key=None, base_url=None):
-        self.api_key = api_key or "default_api_key" # key or token to client provider
-        self.base_url = base_url or 'http://localhost:11434/v1' # uri to the provider
-
-    def create(self):
-        return OpenAI(api_key=self.api_key, base_url=self.base_url)
-
-# Registering the new client with the factory
-ClientFactory.register_client('nameOfClient', CustomClient)
-
-# Example of creating an instance of your custom client
-custom_client = ClientFactory.create_client('nameOfClient')
-```
-
-> [!WARNING]
-> Swarm is currently an experimental sample framework intended to explore ergonomic interfaces for multi-agent systems. It is not intended to be used in production, and therefore has no official support. (This also means we will not be reviewing PRs or issues!)
->
-> The primary goal of Swarm is to showcase the handoff & routines patterns explored in the [Orchestrating Agents: Handoffs & Routines](https://cookbook.openai.com/examples/orchestrating_agents) cookbook. It is not meant as a standalone library, and is primarily for educational purposes.
-
-## Install
-
-Requires Python 3.10+
-
-```shell
-pip install git+ssh://git@github.com/openai/swarm.git
-```
-
-or
-
-```shell
-pip install git+https://github.com/openai/swarm.git
-```
 
 ## Usage
 
@@ -121,6 +81,47 @@ print(response.messages[-1]["content"])
 Hope glimmers brightly,
 New paths converge gracefully,
 What can I assist?
+```
+
+## Usage with Open source llm
+
+You can use the factory method to create different clients based on your needs. An example of usage can be found in `examples/basic/agent_handoff.py`.
+
+```python
+from swarm import Swarm, ClientFactory  
+
+# Create an OpenAI client
+openai_client = ClientFactory.create_client('openai')
+
+# Create a Hugging Face client
+huggingface_client = ClientFactory.create_client('huggingface')
+
+# Create an Ollama client
+ollama_client = ClientFactory.create_client('ollama')
+
+# you can pass key and url direclty to client 
+client = Swarm(ClientFactory.create_client('huggingface', base_url=os.getenv('ENDPOINT_URL'), api_key=os.getenv('HF_API_TOKEN')))
+```
+
+## Extending with a New Client
+To add a new client, create a class that inherits from BaseClient, implement the required methods, and register it with the ClientFactory. Here’s an example:
+```python 
+
+from swarm import BaseClient, ClientFactory
+
+class CustomClient(BaseClient):
+    def __init__(self, api_key=None, base_url=None):
+        self.api_key = api_key or "default_api_key" # key or token to client provider
+        self.base_url = base_url or 'http://localhost:11434/v1' # uri to the provider
+
+    def create(self):
+        return OpenAI(api_key=self.api_key, base_url=self.base_url)
+
+# Registering the new client with the factory
+ClientFactory.register_client('nameOfClient', CustomClient)
+
+# Example of creating an instance of your custom client
+custom_client = ClientFactory.create_client('nameOfClient')
 ```
 
 ## Table of Contents
