@@ -47,6 +47,25 @@ ollama_client = ClientFactory.create_client('ollama')
 # you can pass key and url direclty to client 
 client = Swarm(ClientFactory.create_client('huggingface', base_url=os.getenv('ENDPOINT_URL'), api_key=os.getenv('HF_API_TOKEN')))
 ```
+## Extending with a New Client
+To add a new client, create a class that inherits from BaseClient, implement the required methods, and register it with the ClientFactory. Here’s an example:
+```python 
+from swarm import BaseClient, ClientFactory  # Adjust this import based on your module structure
+
+class CustomClient(BaseClient):
+    def __init__(self, api_key=None, base_url=None):
+        self.api_key = api_key or "default_api_key"
+        self.base_url = base_url or 'http://localhost:11434/v1'
+
+    def create(self):
+        return OpenAI(api_key=self.api_key, base_url=self.base_url)
+
+# Registering the new client with the factory
+ClientFactory.register_client('nameOfClient', CustomClient)
+
+# Example of creating an instance of your custom client
+custom_client = ClientFactory.create_client('nameOfClient')
+```
 
 > [!WARNING]
 > Swarm is currently an experimental sample framework intended to explore ergonomic interfaces for multi-agent systems. It is not intended to be used in production, and therefore has no official support. (This also means we will not be reviewing PRs or issues!)

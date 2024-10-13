@@ -1,4 +1,5 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod 
+from typing import Dict, Type
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
@@ -43,8 +44,14 @@ class HuggingFaceClient(BaseClient):
         return OpenAI(base_url=self.base_url, api_key=self.api_key)
 
 class ClientFactory:
-    @staticmethod
-    def create_client(client_name, api_key=None, base_url=None):
+    _clients: Dict[str, Type[BaseClient]] = {
+        'openai': OpenAIClient,
+        'ollama': OllamaClient,
+        'huggingface': HuggingFaceClient
+    }
+
+    @classmethod
+    def create_client(cls, client_name: str, api_key: str = None, base_url: str = None) -> OpenAI:
         """
         Factory method to create a client instance based on the client name.
 
@@ -59,14 +66,14 @@ class ClientFactory:
         Raises:
         - ValueError: If an invalid client name is provided.
         """
-        if client_name.lower() == 'openai':
-            return OpenAIClient(api_key, base_url).create()
-        elif client_name.lower() == 'ollama':
-            return OllamaClient(api_key, base_url).create()
-        elif client_name.lower() == 'huggingface':
-            return HuggingFaceClient(api_key, base_url).create()
-        else:
-            raise ValueError(f"Unknown client name: {client_name}. Valid options are 'openai', 'ollama', or 'huggingface'.")
+        client_class = cls._clients.get(client_name.lower())
+        if not client_class:
+            raise ValueError(f"Unknown client name: {client_name}. Valid options are {', '.join(cls._clients.keys())}.")
+        return client_class(api_key, base_url).create()
+
+    @classmethod
+    def register_client(cls, name: str, client_class: Type[BaseClient]):
+        cls._clients[name.lower()] = client_class
 
 # Example usage
 if __name__ == "__main__":
