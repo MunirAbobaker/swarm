@@ -9,7 +9,7 @@ from openai import OpenAI
 
 
 # Local imports
-from .ollamaClient import getOpenAIClient
+from .api_client import ClientFactory
 from .util import function_to_json, debug_print, merge_chunk
 from .types import (
     Agent,
@@ -27,8 +27,9 @@ __CTX_VARS_NAME__ = "context_variables"
 class Swarm:
     def __init__(self, client=None):
         if not client:
-            client = getOpenAIClient() #OpenAI()
+            client = ClientFactory.create_client('openai')
         self.client = client
+        
 
     def get_chat_completion(
         self,

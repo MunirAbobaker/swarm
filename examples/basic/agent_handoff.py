@@ -1,6 +1,11 @@
-from swarm import Swarm, Agent
+from swarm import Swarm, Agent, ClientFactory
+from dotenv import load_dotenv
+import os
 
-client = Swarm()
+# Load environment variables from .env file
+load_dotenv()
+
+client = Swarm(ClientFactory.create_client('ollama', base_url=os.getenv('ENDPOINT_URL'), api_key=os.getenv('HF_API_TOKEN')))
 
 english_agent = Agent(
     name="English Agent",
