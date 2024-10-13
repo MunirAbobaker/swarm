@@ -50,12 +50,13 @@ client = Swarm(ClientFactory.create_client('huggingface', base_url=os.getenv('EN
 ## Extending with a New Client
 To add a new client, create a class that inherits from BaseClient, implement the required methods, and register it with the ClientFactory. Here’s an example:
 ```python 
-from swarm import BaseClient, ClientFactory  # Adjust this import based on your module structure
+
+from swarm import BaseClient, ClientFactory
 
 class CustomClient(BaseClient):
     def __init__(self, api_key=None, base_url=None):
-        self.api_key = api_key or "default_api_key"
-        self.base_url = base_url or 'http://localhost:11434/v1'
+        self.api_key = api_key or "default_api_key" # key or token to client provider
+        self.base_url = base_url or 'http://localhost:11434/v1' # uri to the provider
 
     def create(self):
         return OpenAI(api_key=self.api_key, base_url=self.base_url)
